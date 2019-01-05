@@ -1,0 +1,26 @@
+{
+
+  "description": "redirect url to 1280 size images from tumblr",
+  "manifest_version": 2,
+  "name": "tumblr redirector",
+  "version": "1.0",
+
+  "permissions": [
+    "webRequest", "webRequestBlocking", 
+	"storage", 
+	"tabs",
+	"http://*/*", 
+    "https://*/*"
+  ],
+
+"background": {
+  "scripts": ["background2.js"]
+},
+  
+  "applications": {
+    "gecko": {
+      "strict_min_version": "57.0a1"
+    }
+  }
+
+}
