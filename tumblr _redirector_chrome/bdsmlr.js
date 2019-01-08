@@ -1,7 +1,7 @@
 
 // toggle log messages
 function log(msg){
-if (log_enabled) {
+	if (log_enabled) {
 		console.log('Tumblr Redirector: ' + msg);
 	}
 }
@@ -36,29 +36,30 @@ function redirect(details) {
 		data.count++;
 	}
 	ignoreNextRequest[newurl] = new Date().getTime();
-	// get the domain name of source page
-	chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-		let source_url = tabs[0].url;
-		log("url of the source page is " + source_url);
-		let url = new URL(source_url);
-		let domain = url.hostname;
-		log("domain name of the source page is " + domain);
-		let parsed_domainurl = blogname_regparser.exec(domain);
-		let blogname_regparsed = parsed_domainurl[1];
-		log("blog name of the source page is " + blogname_regparsed);
-	});
+	
 	// change the URL of the picture to 1280 size
 	let parsedurl = regparser.exec(oldurl);
+	log("RegEx pattern matching results: "+ parsedurl);
 	if (parsedurl!==null){
+		// get the blog name from the source page URL
+		chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+			let source_url = tabs[0].url;
+			log("url of the source page is " + source_url);
+			let url = new URL(source_url);
+			let domain = url.hostname;
+			log("domain name of the source page is " + domain);
+			let parsed_domainurl = blogname_regparser.exec(domain);
+			let blogname_regparsed = parsed_domainurl[1];
+			log("blog name of the source page is " + blogname_regparsed);
+		});
+	
 		newurl=oldurl.replace(regparser, "$11280$3$4");
 		log("Redirecting: " + oldurl);
 	}
-	log("RegEx pattern matching results: "+ parsedurl);
-
 	
 	return {
-    redirectUrl: newurl
-  };
+redirectUrl: newurl
+	};
 }
 
 //Cache of urls that have just been redirected to. They will not be redirected again, to
@@ -77,7 +78,7 @@ var redirectThreshold = 1; // how many repeat redirects to the same URL allowed
 // this is the main listener function that handles redirects
 // reference: https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/webRequest/onBeforeRequest
 chrome.webRequest.onBeforeRequest.addListener(
-  redirect,
-  {urls:[pattern],types:["main_frame"]},
-  ["blocking"]
+redirect,
+{urls:[pattern],types:["main_frame"]},
+["blocking"]
 );

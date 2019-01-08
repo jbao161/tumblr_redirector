@@ -5,16 +5,19 @@
   "name": "tumblr redirector",
   "version": "1.0",
   "author": "Jonathan Bao",
-  "email": "jjb8021@gmail.com",
 
   "permissions": [
     "webRequest", "webRequestBlocking", 
 	"http://*/*", 
-    "https://*/*"
+    "https://*/*",
+	"storage"
   ],
-
-"background": {
-  "scripts": ["background.js"]
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
+  "background": {
+  "scripts": ["bdsmlr.js"]
 }
 
 }

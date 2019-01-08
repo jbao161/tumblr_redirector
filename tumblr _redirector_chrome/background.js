@@ -36,7 +36,11 @@ function redirect(details) {
 		data.count++;
 	}
 	ignoreNextRequest[newurl] = new Date().getTime();
-	
+	// get the domain name of source page
+	chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
+		var source_url = tabs[0].url;
+		log("domain name of the source page is " + source_url.hostname);
+	});
 	// change the URL of the picture to 1280 size
 	let parsedurl = regparser.exec(oldurl);
 	if (parsedurl!==null){
